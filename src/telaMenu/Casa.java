@@ -16,7 +16,7 @@ public class Casa extends JPanel implements ActionListener, KeyListener {
     private final Player player;
     private final Timer timer;
     private final ColisoesCasa colisoesCasa;
-    private final Rectangle areaDaPorta = new Rectangle(450, 670, 70, 40);
+    private final Rectangle areaDaPorta = new Rectangle(150, 507, 1200, 300);
     boolean mostrarMensagem = false;
     boolean podeSair = false;
     public Player getPlayer() { return player; }
@@ -28,8 +28,8 @@ public class Casa extends JPanel implements ActionListener, KeyListener {
             timer.stop();
             JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
             Mapa novoMapa = new Mapa();
-            novoMapa.getPlayer().setX(80);
-            novoMapa.getPlayer().setY(270);
+            novoMapa.getPlayer().setX(190);
+            novoMapa.getPlayer().setY(260);
             janela.remove(this);
             janela.add(novoMapa);
             janela.revalidate();
@@ -48,7 +48,7 @@ public class Casa extends JPanel implements ActionListener, KeyListener {
         });
         addKeyListener(this);
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/res/casa.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/res/casa2.png"));
         imagemCasa = icon.getImage();
 
         player = new Player();
@@ -74,12 +74,16 @@ public class Casa extends JPanel implements ActionListener, KeyListener {
 
     @Override
     protected void paintComponent(Graphics g) {
+        int cameraX = player.getX() - getWidth() / 2 + 32 / 2;
+        int cameraY = player.getY() - getHeight() / 2 + 1050 / 2;
+        cameraX = Math.max(0, Math.min(cameraX, imagemCasa.getWidth(this) - getWidth()));
+        cameraY = Math.max(0, Math.min(cameraY, imagemCasa.getHeight(this) - getHeight()));
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g.drawImage(imagemCasa, 275, 0, 1000,800, this);
+        g.drawImage(imagemCasa, -cameraX, -cameraY, this);
         int larguraCasaPlayer = 84;
         int alturaCasaPlayer = 84;
-        g.drawImage(player.getImagem(), 275 + player.getX(), player.getY(), larguraCasaPlayer ,alturaCasaPlayer, this);
+        g.drawImage(player.getImagem(),590 + player.getX(), 100 + player.getY(), larguraCasaPlayer ,alturaCasaPlayer, this);
         if (mostrarMensagem) {
             g2.setFont(fontePixel);
 
@@ -146,7 +150,7 @@ public class Casa extends JPanel implements ActionListener, KeyListener {
         if (areaDaPorta.intersects(player.getBounds())) {
             trocarParaMapa();
         }
-        if (player.getX() >= 360 && player.getX() <= 520 && player.getY() >= 600) {
+        if (areaDaPorta.intersects(player.getBounds())) {
             mostrarMensagem = true;
         } else {
             mostrarMensagem = false;

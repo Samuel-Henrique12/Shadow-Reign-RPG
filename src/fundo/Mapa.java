@@ -29,10 +29,10 @@ public class Mapa extends JPanel implements ActionListener {
     private int cameraX, cameraY;
     int telaLargura = 800;
     int telaAltura = 600;
-    int mapaLargura = 1920;
-    int mapaAltura = 1115;
+    int mapaLargura = 1536;
+    int mapaAltura = 1024;
     private Font fontePixel;
-    private final Rectangle areaParaCasa = new Rectangle(100, 180, 50, 50);
+    private final Rectangle areaParaCasa = new Rectangle(220, 200, 40, 10);
     boolean mostrarMensagemCasa = false;
     boolean podeEntrarCasa = false;
 
@@ -40,8 +40,8 @@ public class Mapa extends JPanel implements ActionListener {
         timer.stop();
         JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         Casa voltouCasa = new Casa();
-        voltouCasa.getPlayer().setX(440);
-        voltouCasa.getPlayer().setY(610);
+        voltouCasa.getPlayer().setX(180);
+        voltouCasa.getPlayer().setY(435);
         janela.remove(this);
         janela.add(voltouCasa);
         janela.revalidate();
@@ -65,7 +65,7 @@ public class Mapa extends JPanel implements ActionListener {
         });
 
 
-        ImageIcon referencia = new ImageIcon("res\\mapa.png");
+        ImageIcon referencia = new ImageIcon("res\\mapa2.png");
         mapaPrincipal = referencia.getImage();
 
         player = new Player();
@@ -73,7 +73,7 @@ public class Mapa extends JPanel implements ActionListener {
 
         addKeyListener(new TecladoAdapter());
 
-        timer = new Timer(5, this);
+        timer = new Timer(1, this);
         timer.start();
 
         try {
@@ -184,8 +184,8 @@ public class Mapa extends JPanel implements ActionListener {
 
         if (cameraX < 0) cameraX = 0;
         if (cameraY < 0) cameraY = 0;
-        if (cameraX > 390) cameraX = 390;
-        if (cameraY > 280) cameraY = 280;
+        if (cameraX > 0) cameraX = 0;
+        if (cameraY > 230) cameraY = 230;
         repaint();
     }
 

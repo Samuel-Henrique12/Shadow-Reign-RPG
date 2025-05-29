@@ -11,10 +11,25 @@ public class Player {
     private int dx, dy;
     private Image imagem;
     int altura,largura;
-    private int frame = 1;
     private String direcao = "Baixo";
+    private String direcaoSimples = "Baixo";
+    private String direcaoComposta = "BaixoDireita";
     private int animacaoDelay = 0;
-    private final int velocidade = 4;
+    private final int velocidade = 3;
+    private boolean andando = false;
+
+    private void alternarSpriteCaminhada() {
+        andando = !andando;
+
+        String caminho;
+        if (andando) {
+            caminho = "res\\PlayerAndando" + direcaoComposta + ".png";
+        } else {
+            caminho = "res\\PlayerParado" + direcaoSimples + ".png";
+        }
+
+        imagem = new ImageIcon(caminho).getImage();
+    }
 
     public Player() {
         this.x = 83;
@@ -46,7 +61,7 @@ public class Player {
         boolean podeMoverY = true;
 
         if (dx != 0) {
-            Rectangle futuroX = new Rectangle(novoX, y , 83, 83);
+            Rectangle futuroX = new Rectangle(novoX, y, 83, 83);
             if (colisoesCasa != null && colisoesCasa.temColisao(futuroX)) {
                 podeMoverX = false;
             }
@@ -62,30 +77,24 @@ public class Player {
         if (podeMoverX) x = novoX;
         if (podeMoverY) y = novoY;
 
-        // Limites da tela
+
         if (x < 0) x = 0;
         if (y < 0) y = 0;
         if (x > 1920 - 83) x = 1920 - 83;
         if (y > 1080 - 83) y = 1080 - 83;
 
-        // Animação
+
         if (dx != 0 || dy != 0) {
             animacaoDelay++;
-            if (animacaoDelay >= 8) {
-                alternarFrame();
-                atualizarSprite();
+            if (animacaoDelay >= 7) {
+                alternarSpriteCaminhada();
                 animacaoDelay = 0;
             }
         }
     }
 
-
-    private void alternarFrame() {
-        frame = (frame ==1) ? 2: 1;
-    }
-
     private void atualizarSprite() {
-        String caminho = "res\\PlayerAndando" + direcao + frame + ".png";
+        String caminho = "res\\PlayerAndando" + direcao + ".png";
         imagem = new ImageIcon(caminho).getImage();
     }
 
@@ -99,40 +108,53 @@ public class Player {
     public void keyPressed(KeyEvent tecla) {
         int codigo = tecla.getKeyCode();
 
-        if(codigo == KeyEvent.VK_UP) {
-            dy=-velocidade;
-            direcao = "Cima";
-        }
-        if(codigo == KeyEvent.VK_DOWN) {
-            dy=velocidade;
-            direcao = "Baixo";
-        }
-        if(codigo == KeyEvent.VK_LEFT) {
-            dx=-velocidade;
-            direcao = "Baixo";
-        }
-        if(codigo == KeyEvent.VK_RIGHT) {
-            dx=velocidade;
-            direcao = "Baixo";
+        if (codigo == KeyEvent.VK_UP || codigo == KeyEvent.VK_W) {
+            dy = -velocidade;
+            direcaoSimples = "Cima";
+            if (dx < 0) direcaoComposta = "CimaEsquerda";
+            else if (dx > 0) direcaoComposta = "CimaDireita";
+            else direcaoComposta = "CimaDireita"; // padrão
         }
 
-        if(codigo == KeyEvent.VK_W) {
-            dy=-velocidade;
-            direcao = "Cima";
+        if (codigo == KeyEvent.VK_DOWN || codigo == KeyEvent.VK_S) {
+            dy = velocidade;
+            direcaoSimples = "Baixo";
+            if (dx < 0) direcaoComposta = "BaixoEsquerda";
+            else if (dx > 0) direcaoComposta = "BaixoDireita";
+            else direcaoComposta = "BaixoDireita"; // padrão
         }
-        if(codigo == KeyEvent.VK_S) {
-            dy=velocidade;
-            direcao = "Baixo";
+
+        if (codigo == KeyEvent.VK_LEFT || codigo == KeyEvent.VK_A) {
+            dx = -velocidade;
+            direcaoComposta = direcaoSimples + "Esquerda";
         }
-        if(codigo == KeyEvent.VK_A) {
-            dx=-velocidade;
-            direcao = "Baixo";
-        }
-        if(codigo == KeyEvent.VK_D) {
-            dx=velocidade;
-            direcao = "Baixo";
+
+        if (codigo == KeyEvent.VK_RIGHT || codigo == KeyEvent.VK_D) {
+            dx = velocidade;
+            direcaoComposta = direcaoSimples + "Direita";
         }
     }
+
+    private void atualizarDirecao() {
+        if (dx > 0 && dy > 0) {
+            direcao = "BaixoDireita";
+        } else if (dx < 0 && dy > 0) {
+            direcao = "BaixoEsquerda";
+        } else if (dx > 0 && dy < 0) {
+            direcao = "CimaDireita";
+        } else if (dx < 0 && dy < 0) {
+            direcao = "CimaEsquerda";
+        } else if (dx > 0) {
+            direcao = "BaixoDireita"; //
+        } else if (dx < 0) {
+            direcao = "BaixoEsquerda";
+        } else if (dy > 0) {
+            direcao = "BaixoDireita";
+        } else if (dy < 0) {
+            direcao = "CimaDireita";
+        }
+    }
+
     // FIM DAS TECLAS
 
     // PAROU DE APERTAR AS TECLAS ==
@@ -141,21 +163,18 @@ public class Player {
     public void keyReleased(KeyEvent tecla) {
         int codigo = tecla.getKeyCode();
 
-        if(codigo == KeyEvent.VK_UP || codigo == KeyEvent.VK_DOWN) {
-            dy=0;
-        }
-        if(codigo == KeyEvent.VK_LEFT || codigo == KeyEvent.VK_RIGHT) {
-            dx=0;
+        if (codigo == KeyEvent.VK_UP || codigo == KeyEvent.VK_W ||
+                codigo == KeyEvent.VK_DOWN || codigo == KeyEvent.VK_S) {
+            dy = 0;
         }
 
-        if(codigo == KeyEvent.VK_W || codigo == KeyEvent.VK_S) {
-            dy=0;
-        }
-        if(codigo == KeyEvent.VK_A || codigo == KeyEvent.VK_D) {
-            dx=0;
+        if (codigo == KeyEvent.VK_LEFT || codigo == KeyEvent.VK_A ||
+                codigo == KeyEvent.VK_RIGHT || codigo == KeyEvent.VK_D) {
+            dx = 0;
         }
 
-        imagem = new ImageIcon("res\\PlayerParado" + direcao + ".png").getImage();
+        andando = false;
+        imagem = new ImageIcon("res\\PlayerParado" + direcaoSimples + ".png").getImage();
     }
 
     public int getX() {
