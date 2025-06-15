@@ -1,0 +1,136 @@
+package telaMenu;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import tela.*;
+import telaMenu.*;
+import fundo.*;
+
+import tela.Container;
+
+public class CriacaoClasse extends JPanel implements KeyListener, MouseListener {
+    private Container container;
+    private Player player;
+    private String nomeDigitado = "";
+    private Image imagemCriacaoClasse;
+    private String classeSelecionada = null;
+    private Font fontePixel;
+    private final Rectangle areaRonin = new Rectangle(640, 252, 240, 90);
+    private final Rectangle areaSamurai = new Rectangle(633, 370, 253, 93);
+    private final Rectangle areaShogun = new Rectangle(635, 493, 251, 90);
+    private Rectangle botaoAvancar = new Rectangle(931, 673, 97, 95);
+
+    public CriacaoClasse(Container container, Player player) {
+        this.container = container;
+        this.player = player;
+
+        setFocusable(true);
+        requestFocusInWindow();
+        addKeyListener(this);
+        addMouseListener(this);
+
+        ImageIcon icon = new ImageIcon(getClass().getResource("/res/criacaoClasse.jpg"));
+        imagemCriacaoClasse = icon.getImage();
+
+        carregarFonte();
+    }
+
+    private void carregarFonte() {
+        try {
+            InputStream is = getClass().getResourceAsStream("/res/Press_Start_2P/PressStart2P-Regular.ttf");
+            fontePixel = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(18f);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(fontePixel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fontePixel = new Font("Arial", Font.PLAIN, 18);
+        }
+    }
+
+    @Override
+    public void addNotify() {
+        super.addNotify();
+        requestFocusInWindow();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(imagemCriacaoClasse, -10, -50, getWidth(), getHeight(), this);
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(fontePixel);
+
+        if (classeSelecionada != null) {
+            g2d.drawString("Classe: " + classeSelecionada.toUpperCase(), 100, 100);
+        }
+
+        // Borda destacando a seleção atual
+        Rectangle selectedArea = null;
+
+        if ("Ronin".equals(classeSelecionada)) {
+            selectedArea = areaRonin;
+        } else if ("Samurai".equals(classeSelecionada)) {
+            selectedArea = areaSamurai;
+        } else if ("Shogun".equals(classeSelecionada)) {
+            selectedArea = areaShogun;
+        }
+
+        if (selectedArea != null) {
+            GradientPaint gradiente = new GradientPaint(
+                    selectedArea.x, selectedArea.y, new Color(255, 94, 77),   // laranja avermelhado
+                    selectedArea.x + selectedArea.width, selectedArea.y + selectedArea.height, new Color(255, 204, 102) // amarelo pôr do sol
+            );
+
+            g2d.setPaint(gradiente);
+            g2d.setStroke(new BasicStroke(4)); // borda mais grossa
+            g2d.draw(selectedArea);
+        }
+        GradientPaint gradienteBotao = new GradientPaint(
+                botaoAvancar.x, botaoAvancar.y, new Color(255, 94, 77),
+                botaoAvancar.x + botaoAvancar.width, botaoAvancar.y + botaoAvancar.height, new Color(255, 195, 113)
+        );
+
+        g2d.setPaint(gradienteBotao);
+        g2d.setStroke(new BasicStroke(3));
+        g2d.draw(botaoAvancar);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        Point click = e.getPoint();
+
+        if (areaRonin.contains(click)) {
+            classeSelecionada = "Ronin";
+            repaint();
+        } else if (areaSamurai.contains(click)) {
+            classeSelecionada = "Samurai";
+            repaint();
+        } else if (areaShogun.contains(click)) {
+            classeSelecionada = "Shogun";
+            repaint();
+        } else if (botaoAvancar.contains(click) && classeSelecionada != null) {
+            player.setClasse(classeSelecionada);
+            container.mostrarTela(Container.CASA);
+        }
+    }
+
+    @Override public void mouseClicked(MouseEvent e) {}
+    @Override public void mouseReleased(MouseEvent e) {}
+    @Override public void mouseEntered(MouseEvent e) {}
+    @Override public void mouseExited(MouseEvent e) {}
+}
