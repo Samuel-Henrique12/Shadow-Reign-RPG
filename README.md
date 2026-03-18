@@ -1,6 +1,8 @@
 
 <img width="1338" height="626" alt="shadowreingfoto" src="https://github.com/user-attachments/assets/e521161a-8a6b-472a-9528-77f88a1a9fba" />
 
+<img width="1337" height="633" alt="shadowreignfoto2" src="https://github.com/user-attachments/assets/44530103-63c0-4fd9-bb94-f7c0462e7cf1" />
+
 Para o jogo rodar é necessário que as roots estejam marcadas corretamente, sendo elas:
 
 src - sources
