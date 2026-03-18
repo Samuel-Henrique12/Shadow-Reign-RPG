@@ -1,3 +1,6 @@
+
+<img width="1338" height="626" alt="shadowreingfoto" src="https://github.com/user-attachments/assets/e521161a-8a6b-472a-9528-77f88a1a9fba" />
+
 Para o jogo rodar é necessário que as roots estejam marcadas corretamente, sendo elas:
 
 src - sources
