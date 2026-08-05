@@ -1,6 +1,6 @@
 package fundo;
 
-
+import tela.Navegacao;
 import tela.PainelEscalavel;
 import tela.Recursos;
 import java.awt.*;
@@ -56,65 +56,32 @@ public class Mapa extends PainelEscalavel implements ActionListener {
     boolean mostrarMensagemEscola = false;
 
     private void trocarParaCasa() {
-        timer.stop();
-        JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         Casa voltouCasa = new Casa(hud, statsMenuController);
         voltouCasa.getPlayer().setX(170);
         voltouCasa.getPlayer().setY(425);
-        janela.remove(this);
-        janela.add(voltouCasa);
-        janela.revalidate();
-        janela.repaint();
+        Navegacao.trocarTela(this, voltouCasa);
     }
 
     private void trocarParaDojo() {
-        timer.stop();
-        JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         Dojo dojo = new Dojo(hud, statsMenuController);
         dojo.getPlayer().setX(750);
         dojo.getPlayer().setY(470);
-        janela.remove(this);
-        janela.add(dojo);
-        janela.revalidate();
-        janela.repaint();
-
-        dojo.requestFocusInWindow();
+        Navegacao.trocarTela(this, dojo);
     }
 
     private void trocarParaInimigoBarbaro() {
-        timer.stop();
-        JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         MapaInimigoBarbaro mapaInimigoBarbaro = new MapaInimigoBarbaro(hud, statsMenuController);
-        janela.remove(this);
-        janela.add(mapaInimigoBarbaro);
-        janela.revalidate();
-        janela.repaint();
-
-        mapaInimigoBarbaro.requestFocusInWindow();
+        Navegacao.trocarTela(this, mapaInimigoBarbaro);
     }
 
     private void trocarParaInimigoArqueiro() {
-        timer.stop();
-        JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         MapaInimigoArqueiro mapaInimigoArqueiro = new MapaInimigoArqueiro(hud, statsMenuController);
-        janela.remove(this);
-        janela.add(mapaInimigoArqueiro);
-        janela.revalidate();
-        janela.repaint();
-
-        mapaInimigoArqueiro.requestFocusInWindow();
+        Navegacao.trocarTela(this, mapaInimigoArqueiro);
     }
 
     private void trocarParaEscola() {
-        timer.stop();
-        JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         Escola escola = new Escola(hud, statsMenuController);
-        janela.remove(this);
-        janela.add(escola);
-        janela.revalidate();
-        janela.repaint();
-
-        escola.requestFocusInWindow();
+        Navegacao.trocarTela(this, escola);
     }
 
 
@@ -574,4 +541,9 @@ public class Mapa extends PainelEscalavel implements ActionListener {
         }
     }
 
+
+    @Override
+    public void aoSair() {
+        timer.stop();
+    }
 }

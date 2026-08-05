@@ -1,7 +1,5 @@
 package telaMenu;
 
-
-
 import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.*;
@@ -120,7 +118,7 @@ public class CriacaoClasse extends PainelEscalavel implements KeyListener, Mouse
             repaint();
         } else if (botaoAvancar.contains(click) && classeSelecionada != null) {
             player.setClasse(classeSelecionada);
-            container.mostrarTela(Container.CASA);
+            container.iniciarJogo();
         }
     }
 

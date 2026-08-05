@@ -1,7 +1,6 @@
 package fundo;
 
-
-
+import tela.Navegacao;
 import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.Timer;
@@ -211,15 +210,10 @@ public class MapaInimigoBarbaro extends PainelEscalavel implements ActionListene
     }
 
     private void trocarParaMapa() {
-            timer.stop();
-            JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
             Mapa novoMapa = new Mapa(hud, statsMenuController);
             novoMapa.getPlayer().setX(650);
             novoMapa.getPlayer().setY(400);
-            janela.remove(this);
-            janela.add(novoMapa);
-            janela.revalidate();
-            janela.repaint();
+            Navegacao.trocarTela(this, novoMapa);
     }
 
     private int calcularDanoPlayer() {
@@ -334,6 +328,11 @@ public class MapaInimigoBarbaro extends PainelEscalavel implements ActionListene
 
     public Player getPlayer() {
         return player;
+    }
+
+    @Override
+    public void aoSair() {
+        timer.stop();
     }
 }
 

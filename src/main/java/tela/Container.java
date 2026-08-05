@@ -19,22 +19,20 @@ public class Container extends JFrame {
 
     private Player player;
     public static final String MENU = "MENU";
-    public static final String CASA = "CASA";
     public static final String CRIACAONOME = "CRIACAONOME";
     public static final String CRIACAOCLASSE = "CRIACAOCLASSE";
-    public static final String MAPAINIMIGOARQUEIRO = "MAPAINIMIGOARQUEIRO";
-    public static final String MAPAINIMIGOBARBARO = "MAPAINIMIGOBARBARO";
-    public static final String MAPAINIMIGOMAGO = "MAPAINIMIGOMAGO";
-    public static final String ESCOLA = "ESCOLA";
-    public static final String MAPA = "MAPA";
     public static final String CREDITOS = "CREDITOS";
-    public static final String DOJO = "DOJO";
+
+    // Card Único Onde Vive a Tela de Gameplay Ativa (Uma de Cada Vez)
+    private static final String DINAMICA = "DINAMICA";
+
     private Hud hud;
     private StatsMenu statsMenuController;
 
 
     private CardLayout cardLayout;
     private JPanel painelPrincipal;
+    private PainelEscalavel telaDinamica;
 
 
     public Container() {
@@ -42,31 +40,14 @@ public class Container extends JFrame {
         cardLayout = new CardLayout();
         painelPrincipal = new JPanel(cardLayout);
 
-        Menu painelMenu = new Menu(this);
-        CriacaoNome painelCriacaoNome = new CriacaoNome(this, player);
-        CriacaoClasse painelCriacaoClasse = new CriacaoClasse(this, player);
         hud = new Hud();
         statsMenuController = new StatsMenu(hud, player);
-        Casa painelCasa = new Casa(hud, statsMenuController);
-        Mapa painelMapa = new Mapa(hud,statsMenuController);
-        Dojo painelDojo = new Dojo(hud,statsMenuController);
-        Escola painelEscola = new Escola(hud, statsMenuController);
-        MapaInimigoMago painelMapaInimigoMago = new MapaInimigoMago(hud, statsMenuController);
-        MapaInimigoBarbaro painelMapaInimigoBarbaro = new MapaInimigoBarbaro(hud, statsMenuController);
-        MapaInimigoArqueiro painelMapaInimigoArqueiro = new MapaInimigoArqueiro( hud, statsMenuController);
-        Creditos painelCreditos = new Creditos(this);
 
-        painelPrincipal.add(painelMenu, MENU);
-        painelPrincipal.add(painelCriacaoNome, CRIACAONOME);
-        painelPrincipal.add(painelCriacaoClasse, CRIACAOCLASSE);
-        painelPrincipal.add(painelCreditos, CREDITOS);
-        painelPrincipal.add(painelMapa, MAPA);
-        painelPrincipal.add(painelDojo, DOJO);
-        painelPrincipal.add(painelCasa, CASA);
-        painelPrincipal.add(painelEscola, ESCOLA);
-        painelPrincipal.add(painelMapaInimigoArqueiro, MAPAINIMIGOARQUEIRO);
-        painelPrincipal.add(painelMapaInimigoBarbaro, MAPAINIMIGOBARBARO);
-        painelPrincipal.add(painelMapaInimigoMago, MAPAINIMIGOMAGO);
+        // Adiciona as Telas Fixas do Menu e Criação de Personagem
+        painelPrincipal.add(new Menu(this), MENU);
+        painelPrincipal.add(new CriacaoNome(this, player), CRIACAONOME);
+        painelPrincipal.add(new CriacaoClasse(this, player), CRIACAOCLASSE);
+        painelPrincipal.add(new Creditos(this), CREDITOS);
 
 
         // Configurações da janela
@@ -89,6 +70,28 @@ public class Container extends JFrame {
 
     public Player getPlayer() {
         return player;
+    }
+
+    // Entrada do Gameplay, Vinda da Criacao de Classe
+    public void iniciarJogo() {
+        trocarTela(new Casa(hud, statsMenuController));
+    }
+
+    // Troca a Tela de Gameplay Ativa
+    public void trocarTela(PainelEscalavel nova) {
+        if (telaDinamica != null) {
+            telaDinamica.aoSair();
+            painelPrincipal.remove(telaDinamica);
+        }
+
+        telaDinamica = nova;
+        painelPrincipal.add(nova, DINAMICA);
+        cardLayout.show(painelPrincipal, DINAMICA);
+
+        painelPrincipal.revalidate();
+        painelPrincipal.repaint();
+
+        SwingUtilities.invokeLater(nova::requestFocusInWindow);
     }
 
     public void mostrarTela(String nomeTela) {

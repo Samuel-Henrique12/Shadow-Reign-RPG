@@ -1,7 +1,6 @@
 package fundo;
 
-
-
+import tela.Navegacao;
 import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.Timer;
@@ -212,17 +211,10 @@ public class MapaInimigoMago extends PainelEscalavel implements ActionListener {
             }
 
             private void trocarParaDojo() {
-                timer.stop();
-                JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
                 Dojo dojo = new Dojo(hud, statsMenuController);
                 dojo.getPlayer().setX(750);
                 dojo.getPlayer().setY(55);
-                janela.remove(this);
-                janela.add(dojo);
-                janela.revalidate();
-                janela.repaint();
-
-                dojo.requestFocusInWindow();
+                Navegacao.trocarTela(this, dojo);
             }
 
             private int calcularDanoPlayer() {
@@ -338,5 +330,10 @@ public class MapaInimigoMago extends PainelEscalavel implements ActionListener {
             public Player getPlayer() {
                 return player;
             }
-        }
+        
+    @Override
+    public void aoSair() {
+        timer.stop();
+    }
+}
 

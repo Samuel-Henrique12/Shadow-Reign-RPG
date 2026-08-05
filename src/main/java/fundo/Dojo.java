@@ -1,7 +1,6 @@
 package fundo;
 
-
-
+import tela.Navegacao;
 import tela.PainelEscalavel;
 import tela.Recursos;
 import java.awt.*;
@@ -35,28 +34,15 @@ public class Dojo extends PainelEscalavel implements ActionListener {
     private boolean dialogoMago = false;
 
     private void trocarParaMapa() {
-        timer.stop();
-        JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         Mapa mapa = new Mapa(hud, statsMenuController);
         mapa.getPlayer().setX(1160);
         mapa.getPlayer().setY(630);
-        janela.remove(this);
-        janela.add(mapa);
-        janela.revalidate();
-        janela.repaint();
-        mapa.requestFocusInWindow();
+        Navegacao.trocarTela(this, mapa);
     }
 
     private void trocarParaInimigoOni() {
-        timer.stop();
-        JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         MapaInimigoMago mapaInimigoMago = new MapaInimigoMago( hud, statsMenuController);
-        janela.remove(this);
-        janela.add(mapaInimigoMago);
-        janela.revalidate();
-        janela.repaint();
-
-        mapaInimigoMago.requestFocusInWindow();
+        Navegacao.trocarTela(this, mapaInimigoMago);
     }
 
     public Dojo(Hud hud, StatsMenu statsMenu) {
@@ -333,5 +319,10 @@ public class Dojo extends PainelEscalavel implements ActionListener {
         public void keyReleased(KeyEvent e) {
             player.keyReleased(e);
         }
+    }
+
+    @Override
+    public void aoSair() {
+        timer.stop();
     }
 }

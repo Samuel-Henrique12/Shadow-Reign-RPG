@@ -1,7 +1,6 @@
 package fundo;
 
-
-
+import tela.Navegacao;
 import tela.PainelEscalavel;
 import tela.Recursos;
 import tela.Player;
@@ -40,15 +39,10 @@ public class Casa extends PainelEscalavel implements ActionListener, KeyListener
 
     private void trocarParaMapa() {
         if (mostrarMensagem && podeSair) {
-            timer.stop();
-            JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
             Mapa novoMapa = new Mapa(hud, statsMenuController);
             novoMapa.getPlayer().setX(190);
             novoMapa.getPlayer().setY(260);
-            janela.remove(this);
-            janela.add(novoMapa);
-            janela.revalidate();
-            janela.repaint();
+            Navegacao.trocarTela(this, novoMapa);
 
         }
     }
@@ -341,4 +335,9 @@ public class Casa extends PainelEscalavel implements ActionListener, KeyListener
 
     @Override
     public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void aoSair() {
+        timer.stop();
+    }
 }

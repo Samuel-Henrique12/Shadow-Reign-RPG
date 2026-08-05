@@ -1,7 +1,6 @@
 package fundo;
 
-
-
+import tela.Navegacao;
 import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.*;
@@ -57,7 +56,6 @@ public class Escola extends PainelEscalavel implements ActionListener, KeyListen
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    timer.stop();
                     trocarParaMapa();
                     return;
                 }
@@ -169,15 +167,10 @@ public class Escola extends PainelEscalavel implements ActionListener, KeyListen
     }
 
     private void trocarParaMapa() {
-        timer.stop();
-        JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
         Mapa novoMapa = new Mapa(hud, statsMenuController);
         novoMapa.getPlayer().setX(190);
         novoMapa.getPlayer().setY(260);
-        janela.remove(this);
-        janela.add(novoMapa);
-        janela.revalidate();
-        janela.repaint();
+        Navegacao.trocarTela(this, novoMapa);
     }
     @Override
     protected void desenhar(Graphics2D g) {
@@ -276,4 +269,9 @@ public class Escola extends PainelEscalavel implements ActionListener, KeyListen
     public void keyReleased(KeyEvent e) {}
     @Override
     public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void aoSair() {
+        timer.stop();
+    }
 }

@@ -89,6 +89,10 @@ public abstract class PainelEscalavel extends JPanel {
     // Corpo do Antigo paintComponent de Cada Tela
     protected abstract void desenhar(Graphics2D g);
 
+    // Chamado Pelo Container Antes de Descartar a Tela
+    public void aoSair() {
+    }
+
     // Areas Clicaveis da Tela, Para o Modo de Depuracao
     protected List<Rectangle> hitboxesDepuracao() {
         return Collections.emptyList();
