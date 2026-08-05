@@ -1,6 +1,8 @@
 package fundo;
 
 
+
+import tela.PainelEscalavel;
 import tela.Recursos;
 import tela.Player;
 import javax.swing.*;
@@ -10,7 +12,7 @@ import java.awt.event.*;
 import tela.*;
 import tela.StatsMenu;
 
-public class Casa extends JPanel implements ActionListener, KeyListener {
+public class Casa extends PainelEscalavel implements ActionListener, KeyListener {
     private Image imagemCasa;
     private final Player player;
     private final Timer timer;
@@ -52,6 +54,7 @@ public class Casa extends JPanel implements ActionListener, KeyListener {
     }
 
     public Casa(Hud hud, StatsMenu statsMenu) {
+        super(PainelEscalavel.LARGURA_PADRAO, PainelEscalavel.ALTURA_PADRAO);
         this.colisoesCasa = new ColisoesCasa();
         setFocusable(true);
         requestFocusInWindow();
@@ -67,7 +70,8 @@ public class Casa extends JPanel implements ActionListener, KeyListener {
         addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
-                statsMenuController.clicar(e.getX(), e.getY());
+                java.awt.Point p = paraLogico(e.getX(), e.getY());
+                statsMenuController.clicar(p.x, p.y);
             }
         });
 
@@ -90,16 +94,13 @@ public class Casa extends JPanel implements ActionListener, KeyListener {
 
         fontePixel = Recursos.fonte(18f);
     }
-
     @Override
-    protected void paintComponent(Graphics g) {
-        int cameraX = player.getX() - getWidth() / 2 + 32 / 2;
-        int cameraY = player.getY() - getHeight() / 2 + 1050 / 2;
+    protected void desenhar(Graphics2D g) {
+        int cameraX = player.getX() - larguraLogica() / 2 + 32 / 2;
+        int cameraY = player.getY() - alturaLogica() / 2 + 1050 / 2;
 
-        cameraX = Math.max(0, Math.min(cameraX, imagemCasa.getWidth(this) - getWidth()));
-        cameraY = Math.max(0, Math.min(cameraY, imagemCasa.getHeight(this) - getHeight()));
-
-        super.paintComponent(g);
+        cameraX = Math.max(0, Math.min(cameraX, imagemCasa.getWidth(this) - larguraLogica()));
+        cameraY = Math.max(0, Math.min(cameraY, imagemCasa.getHeight(this) - alturaLogica()));
         Graphics2D g2 = (Graphics2D) g;
 
         g.drawImage(imagemCasa, -cameraX, -cameraY, this);

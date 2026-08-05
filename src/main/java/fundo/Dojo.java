@@ -1,6 +1,8 @@
 package fundo;
 
 
+
+import tela.PainelEscalavel;
 import tela.Recursos;
 import java.awt.*;
 import javax.swing.*;
@@ -9,7 +11,7 @@ import tela.Player;
 import tela.Hud;
 import tela.StatsMenu;
 
-public class Dojo extends JPanel implements ActionListener {
+public class Dojo extends PainelEscalavel implements ActionListener {
 
     private Image imagemDojo;
     private int cameraX = 0;
@@ -58,6 +60,7 @@ public class Dojo extends JPanel implements ActionListener {
     }
 
     public Dojo(Hud hud, StatsMenu statsMenu) {
+        super(PainelEscalavel.LARGURA_PADRAO, PainelEscalavel.ALTURA_PADRAO);
         ColisoesDojo colisoesDojo = new ColisoesDojo();
 
         setFocusable(true);
@@ -90,10 +93,8 @@ public class Dojo extends JPanel implements ActionListener {
     public Player getPlayer() {
         return player;
     }
-
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void desenhar(Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g;
         Graphics2D graficos = (Graphics2D) g;
         g.drawImage(imagemDojo, -cameraX, -cameraY, this);
@@ -279,8 +280,8 @@ public class Dojo extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        cameraX = player.getX() - getWidth() / 2 + 40 / 2;
-        cameraY = player.getY() - getHeight() / 2 + 500;
+        cameraX = player.getX() - larguraLogica() / 2 + 40 / 2;
+        cameraY = player.getY() - alturaLogica() / 2 + 500;
         player.Update();
 
         Rectangle jogador = new Rectangle(player.getX(), player.getY(), 83, 83);

@@ -1,6 +1,8 @@
 package fundo;
 
 
+
+import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.Timer;
 import java.awt.Graphics;
@@ -14,7 +16,7 @@ import javax.swing.*;
 import tela.Hud;
 import tela.StatsMenu;
 
-public class MapaInimigoArqueiro extends JPanel implements ActionListener {
+public class MapaInimigoArqueiro extends PainelEscalavel implements ActionListener {
 
     private Timer timer;
     private Player player;
@@ -40,6 +42,7 @@ public class MapaInimigoArqueiro extends JPanel implements ActionListener {
     private EstadoBatalha estadoAtual = EstadoBatalha.INTRO;
 
     public MapaInimigoArqueiro( Hud hud, StatsMenu statsMenuController) {
+        super(PainelEscalavel.LARGURA_PADRAO, PainelEscalavel.ALTURA_PADRAO);
         this.hud = hud;
         this.statsMenuController = statsMenuController;
         this.player = statsMenuController.getPlayer();
@@ -123,10 +126,8 @@ public class MapaInimigoArqueiro extends JPanel implements ActionListener {
         }
         mensagensLog.add(mensagem);
     }
-
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void desenhar(Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g;
 
         g.drawImage(fundoBatalhaImg, 0, 0, null);

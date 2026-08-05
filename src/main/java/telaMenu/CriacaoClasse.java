@@ -1,6 +1,8 @@
 package telaMenu;
 
 
+
+import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +14,7 @@ import fundo.*;
 
 import tela.Container;
 
-public class CriacaoClasse extends JPanel implements KeyListener, MouseListener {
+public class CriacaoClasse extends PainelEscalavel implements KeyListener, MouseListener {
     private Container container;
     private Player player;
     private String nomeDigitado = "";
@@ -25,6 +27,7 @@ public class CriacaoClasse extends JPanel implements KeyListener, MouseListener 
     private Rectangle botaoAvancar = new Rectangle(931, 673, 97, 95);
 
     public CriacaoClasse(Container container, Player player) {
+        super(PainelEscalavel.LARGURA_PADRAO, PainelEscalavel.ALTURA_PADRAO);
         this.container = container;
         this.player = player;
 
@@ -47,11 +50,9 @@ public class CriacaoClasse extends JPanel implements KeyListener, MouseListener 
         super.addNotify();
         requestFocusInWindow();
     }
-
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(imagemCriacaoClasse, -10, -50, getWidth(), getHeight(), this);
+    protected void desenhar(Graphics2D g) {
+        g.drawImage(imagemCriacaoClasse, -10, -50, larguraLogica(), alturaLogica(), this);
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.WHITE);
@@ -106,7 +107,7 @@ public class CriacaoClasse extends JPanel implements KeyListener, MouseListener 
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Point click = e.getPoint();
+        Point click = paraLogico(e.getPoint());
 
         if (areaRonin.contains(click)) {
             classeSelecionada = "Ronin";
@@ -127,4 +128,9 @@ public class CriacaoClasse extends JPanel implements KeyListener, MouseListener 
     @Override public void mouseReleased(MouseEvent e) {}
     @Override public void mouseEntered(MouseEvent e) {}
     @Override public void mouseExited(MouseEvent e) {}
+
+    @Override
+    protected java.util.List<Rectangle> hitboxesDepuracao() {
+        return java.util.Arrays.asList(areaRonin, areaSamurai, areaShogun, botaoAvancar);
+    }
 }

@@ -69,15 +69,19 @@ public class Container extends JFrame {
         painelPrincipal.add(painelMapaInimigoMago, MAPAINIMIGOMAGO);
 
 
-        pack();
-
         // Configurações da janela
         add(painelPrincipal);
         setTitle("Shadow Reign RPG");
-        setSize(1920, 1080);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(true);
+        setMinimumSize(new Dimension(640, 360));
+
+        pack();
+        ajustarAoMonitor();
         setLocationRelativeTo(null);
-        this.setResizable(true);
+
+        instalarAtalhoDepuracao();
+
         setVisible(true);
 
         mostrarTela(MENU);
@@ -89,9 +93,52 @@ public class Container extends JFrame {
 
     public void mostrarTela(String nomeTela) {
         cardLayout.show(painelPrincipal, nomeTela);
+
+        // Foco praa TELA Visivel, Nunca pro Container do CardLayout
+        SwingUtilities.invokeLater(() -> {
+            for (java.awt.Component tela : painelPrincipal.getComponents()) {
+                if (tela.isVisible()) {
+                    tela.requestFocusInWindow();
+                    return;
+                }
+            }
+        });
+    }
+
+    // Ajusta a Janela ao Monitor Preservando a Proporcao do Conteudo
+    private void ajustarAoMonitor() {
+        Rectangle util = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        Insets bordas = getInsets();
+
+        int conteudoDisponivelW = util.width - bordas.left - bordas.right;
+        int conteudoDisponivelH = util.height - bordas.top - bordas.bottom;
+
+        // Escalar a Janela Inteira Distorceria, Entao dimensiona o CONTEUDO na proporcao da base e soma os insets
+        double escala = Math.min(1.0, Math.min(
+                conteudoDisponivelW / (double) PainelEscalavel.LARGURA_PADRAO,
+                conteudoDisponivelH / (double) PainelEscalavel.ALTURA_PADRAO));
+
+        int conteudoW = (int) Math.round(PainelEscalavel.LARGURA_PADRAO * escala);
+        int conteudoH = (int) Math.round(PainelEscalavel.ALTURA_PADRAO * escala);
+
+        setSize(conteudoW + bordas.left + bordas.right,
+                conteudoH + bordas.top + bordas.bottom);
+    }
+
+    // Alterna o Overlay de Hitboxes com F3, Independente de Quem Tem Foco
+    private void instalarAtalhoDepuracao() {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                .addKeyEventDispatcher(evento -> {
+                    if (evento.getID() == java.awt.event.KeyEvent.KEY_PRESSED
+                            && evento.getKeyCode() == java.awt.event.KeyEvent.VK_F3) {
+                        Depuracao.hitboxes = !Depuracao.hitboxes;
+                        repaint();
+                    }
+                    return false;
+                });
     }
 
     public static void main(String[] args) {
-        new Container();
+        SwingUtilities.invokeLater(Container::new);
     }
 }

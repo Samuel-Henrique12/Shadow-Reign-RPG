@@ -1,5 +1,7 @@
 package fundo;
 
+
+import tela.PainelEscalavel;
 import tela.Recursos;
 import java.awt.*;
 import java.awt.event.*;
@@ -17,7 +19,7 @@ import javax.swing.SwingUtilities;
 import tela.Hud;
 import tela.StatsMenu;
 
-public class Mapa extends JPanel implements ActionListener {
+public class Mapa extends PainelEscalavel implements ActionListener {
 
     private final Image mapaPrincipal;
     private ArrayList<Rectangle> colisoes = new ArrayList<>();
@@ -121,6 +123,7 @@ public class Mapa extends JPanel implements ActionListener {
     }
 
     public Mapa(Hud hud, StatsMenu statsMenu) {
+        super(PainelEscalavel.LARGURA_PADRAO, PainelEscalavel.ALTURA_PADRAO);
         setFocusable(true);
         setDoubleBuffered(true);
         colisoes = ColisoesMapaPrincipal.carregarColisoes();
@@ -135,7 +138,8 @@ public class Mapa extends JPanel implements ActionListener {
         addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
-                statsMenuController.clicar(e.getX(), e.getY());
+                java.awt.Point p = paraLogico(e.getX(), e.getY());
+                statsMenuController.clicar(p.x, p.y);
             }
         });
 
@@ -158,10 +162,8 @@ public class Mapa extends JPanel implements ActionListener {
 
         fontePixel = Recursos.fonte(18f);
     }
-
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void desenhar(Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g;
         Graphics2D graficos = (Graphics2D) g;
 

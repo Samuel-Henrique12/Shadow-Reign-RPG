@@ -1,6 +1,8 @@
 package telaMenu;
 
 
+
+import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +10,7 @@ import java.awt.event.*;
 import tela.Player;
 import tela.Container;
 
-public class CriacaoNome extends JPanel implements KeyListener, MouseListener {
+public class CriacaoNome extends PainelEscalavel implements KeyListener, MouseListener {
     private Container container;
     private Player player;
     private String nomeDigitado = "";
@@ -18,6 +20,7 @@ public class CriacaoNome extends JPanel implements KeyListener, MouseListener {
     private Rectangle botaoAvancar = new Rectangle(945, 700, 85, 80);
 
     public CriacaoNome(Container container, Player player) {
+        super(PainelEscalavel.LARGURA_PADRAO, PainelEscalavel.ALTURA_PADRAO);
         this.container = container;
         this.player = player;
 
@@ -40,11 +43,9 @@ public class CriacaoNome extends JPanel implements KeyListener, MouseListener {
         super.addNotify();
         requestFocusInWindow();
     }
-
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(imagemCriacaoNome, -10, -50, getWidth(), getHeight(), this);
+    protected void desenhar(Graphics2D g) {
+        g.drawImage(imagemCriacaoNome, -10, -50, larguraLogica(), alturaLogica(), this);
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.WHITE);
@@ -108,10 +109,12 @@ public class CriacaoNome extends JPanel implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (botaoAvancar.contains(e.getPoint()) && (!nomeDigitado.trim().isEmpty())) {
+        Point clique = paraLogico(e.getPoint());
+
+        if (botaoAvancar.contains(clique) && (!nomeDigitado.trim().isEmpty())) {
             player.setNome(nomeDigitado.trim());
             container.mostrarTela(Container.CRIACAOCLASSE);
-        } else if (areaTexto.contains(e.getPoint())) {
+        } else if (areaTexto.contains(clique)) {
             requestFocusInWindow(); // Clique dentro da caixa traz o foco
         }
     }
@@ -120,4 +123,9 @@ public class CriacaoNome extends JPanel implements KeyListener, MouseListener {
     @Override public void mouseReleased(MouseEvent e) {}
     @Override public void mouseEntered(MouseEvent e) {}
     @Override public void mouseExited(MouseEvent e) {}
+
+    @Override
+    protected java.util.List<Rectangle> hitboxesDepuracao() {
+        return java.util.Arrays.asList(areaTexto, botaoAvancar);
+    }
 }

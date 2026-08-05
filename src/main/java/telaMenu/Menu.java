@@ -1,13 +1,15 @@
 package telaMenu;
 
 
+
+import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import tela.Container;
 
-public class Menu extends JPanel implements KeyListener, MouseListener {
+public class Menu extends PainelEscalavel implements KeyListener, MouseListener {
     private Image imagemMenu;
     private int opcaoSelecionada = 0;
     private Container container;
@@ -15,6 +17,7 @@ public class Menu extends JPanel implements KeyListener, MouseListener {
     private Rectangle botaoCreditos = new Rectangle(450, 525, 720, 200);
 
     public Menu(Container container) {
+        super(PainelEscalavel.LARGURA_PADRAO, PainelEscalavel.ALTURA_PADRAO);
         this.container = container;
 
         setFocusable(true);
@@ -24,10 +27,8 @@ public class Menu extends JPanel implements KeyListener, MouseListener {
 
         imagemMenu = Recursos.imagem("menu.jpeg");
     }
-
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void desenhar(Graphics2D g) {
         g.drawImage(imagemMenu, 0, 0, this);
     }
 @Override
@@ -49,8 +50,9 @@ public void keyPressed(KeyEvent e) {
 
 @Override
 public void mousePressed(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
+        java.awt.Point p = paraLogico(e.getX(), e.getY());
+        int x = p.x;
+        int y = p.y;
 
     if (botaoJogar.contains(x, y)) {
         container.mostrarTela(Container.CRIACAONOME);
@@ -65,5 +67,10 @@ public void mouseClicked(MouseEvent e) {}
 public void mouseReleased(MouseEvent e) {}
 public void mouseEntered(MouseEvent e) {}
 public void mouseExited(MouseEvent e) {}
+
+    @Override
+    protected java.util.List<Rectangle> hitboxesDepuracao() {
+        return java.util.Arrays.asList(botaoJogar, botaoCreditos);
+    }
 }
 

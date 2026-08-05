@@ -1,6 +1,8 @@
 package fundo;
 
 
+
+import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +16,7 @@ import tela.Player;
 import tela.StatsMenu;
 import tela.Hud;
 
-public class Escola extends JPanel implements ActionListener, KeyListener {
+public class Escola extends PainelEscalavel implements ActionListener, KeyListener {
 
     private final Image imagemFundo;
     private final Player player;
@@ -30,6 +32,7 @@ public class Escola extends JPanel implements ActionListener, KeyListener {
     private boolean esperandoConfirmacao = false;
 
     public Escola(Hud hud, StatsMenu statsMenuController) {
+        super(PainelEscalavel.LARGURA_PADRAO, PainelEscalavel.ALTURA_PADRAO);
         this.hud = hud;
         this.statsMenuController = statsMenuController;
         this.player = statsMenuController.getPlayer();
@@ -176,10 +179,8 @@ public class Escola extends JPanel implements ActionListener, KeyListener {
         janela.revalidate();
         janela.repaint();
     }
-
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void desenhar(Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g;
 
         hud.render(g);
