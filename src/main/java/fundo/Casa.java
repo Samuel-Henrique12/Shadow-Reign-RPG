@@ -1,5 +1,7 @@
 package fundo;
 
+
+import tela.Recursos;
 import tela.Player;
 import javax.swing.*;
 import java.awt.*;
@@ -69,11 +71,10 @@ public class Casa extends JPanel implements ActionListener, KeyListener {
             }
         });
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/res/casa2.png"));
-        imagemCasa = icon.getImage();
+        imagemCasa = Recursos.imagem("casa2.png");
 
-        playerPai = new ImageIcon(getClass().getResource("/res/PlayerPai.png")).getImage();
-        playerMae = new ImageIcon(getClass().getResource("/res/PlayerMae.png")).getImage();
+        playerPai = Recursos.imagem("PlayerPai.png");
+        playerMae = Recursos.imagem("PlayerMae.png");
 
         player = new Player();
         player.Load();
@@ -87,18 +88,7 @@ public class Casa extends JPanel implements ActionListener, KeyListener {
         timer = new Timer (15,this);
         timer.start();
 
-        try {
-            fontePixel = Font.createFont(
-                    Font.TRUETYPE_FONT,
-                    getClass().getResourceAsStream("/res/Press_Start_2P/PressStart2P-Regular.ttf")
-            ).deriveFont(18f);
-
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(fontePixel);  // opcional
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fontePixel = new Font("Arial", Font.PLAIN, 18);
-        }
+        fontePixel = Recursos.fonte(18f);
     }
 
     @Override

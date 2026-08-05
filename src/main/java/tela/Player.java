@@ -125,14 +125,11 @@ public class Player {
     private void alternarSpriteCaminhada() {
         andando = !andando;
 
-        String caminho;
         if (andando) {
-            caminho = "res\\PlayerAndando" + direcaoComposta + ".png";
+            imagem = Recursos.imagem("PlayerAndando" + direcaoComposta + ".png");
         } else {
-            caminho = "res\\PlayerParado" + direcaoSimples + ".png";
+            imagem = Recursos.imagem("PlayerParado" + direcaoSimples + ".png");
         }
-
-        imagem = new ImageIcon(caminho).getImage();
     }
 
     public Player() {
@@ -152,8 +149,8 @@ public class Player {
     }
 
     public void Load() {
-        ImageIcon referencia = new ImageIcon("res\\PlayerParadoBaixo.png");
-        imagem = referencia.getImage();
+        Recursos.preCarregarPlayer();
+        imagem = Recursos.imagem("PlayerParadoBaixo.png");
         altura = imagem.getHeight(null);
         largura = imagem.getWidth(null);
     }
@@ -204,11 +201,6 @@ public class Player {
         }
     }
 
-    private void atualizarSprite() {
-        String caminho = "res\\PlayerAndando" + direcao + ".png";
-        imagem = new ImageIcon(caminho).getImage();
-    }
-
     public void cancelarMovimento() {
         dx = 0;
         dy = 0;
@@ -246,26 +238,6 @@ public class Player {
         }
     }
 
-    private void atualizarDirecao() {
-        if (dx > 0 && dy > 0) {
-            direcao = "BaixoDireita";
-        } else if (dx < 0 && dy > 0) {
-            direcao = "BaixoEsquerda";
-        } else if (dx > 0 && dy < 0) {
-            direcao = "CimaDireita";
-        } else if (dx < 0 && dy < 0) {
-            direcao = "CimaEsquerda";
-        } else if (dx > 0) {
-            direcao = "BaixoDireita"; //
-        } else if (dx < 0) {
-            direcao = "BaixoEsquerda";
-        } else if (dy > 0) {
-            direcao = "BaixoDireita";
-        } else if (dy < 0) {
-            direcao = "CimaDireita";
-        }
-    }
-
     public void keyReleased(KeyEvent tecla) {
         int codigo = tecla.getKeyCode();
 
@@ -280,7 +252,7 @@ public class Player {
         }
 
         andando = false;
-        imagem = new ImageIcon("res\\PlayerParado" + direcaoSimples + ".png").getImage();
+        imagem = Recursos.imagem("PlayerParado" + direcaoSimples + ".png");
     }
 
     public int getX() {

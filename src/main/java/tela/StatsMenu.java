@@ -18,8 +18,8 @@ public class StatsMenu {
     private Rectangle botaoFechar;
 
     public StatsMenu(Hud hud, Player player) {
-        statsMenu = new ImageIcon(getClass().getResource("/res/statsMenu.png")).getImage();
-        chaveDojo = new ImageIcon(getClass().getResource("/res/chaveDojo.png")).getImage();
+        statsMenu = Recursos.imagem("statsMenu.png");
+        chaveDojo = Recursos.imagem("chaveDojo.png");
         statsBotao = new Rectangle(
                 hud.getStatsIconX(),
                 hud.getStatsIconY(),
@@ -34,14 +34,7 @@ public class StatsMenu {
     }
 
     private void carregarFonte() {
-        try {
-            InputStream is = getClass().getResourceAsStream("/res/Press_Start_2P/PressStart2P-Regular.ttf");
-            fontePixel = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(17f);
-            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(fontePixel);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fontePixel = new Font("Arial", Font.PLAIN, 18);
-        }
+        fontePixel = Recursos.fonte(17f);
     }
 
     public void clicar(int mouseX, int mouseY) {

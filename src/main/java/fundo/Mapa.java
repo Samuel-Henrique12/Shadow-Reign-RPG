@@ -1,4 +1,6 @@
 package fundo;
+
+import tela.Recursos;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.Graphics;
@@ -138,11 +140,10 @@ public class Mapa extends JPanel implements ActionListener {
         });
 
 
-        ImageIcon referencia = new ImageIcon("res\\mapa2.png");
-        mapaPrincipal = referencia.getImage();
+        mapaPrincipal = Recursos.imagem("mapa2.png");
 
-        Arqueiro = new ImageIcon(getClass().getResource("/res/Arqueiro.png")).getImage();
-        Barbaro = new ImageIcon(getClass().getResource("/res/Barbaro.png")).getImage();
+        Arqueiro = Recursos.imagem("Arqueiro.png");
+        Barbaro = Recursos.imagem("Barbaro.png");
 
         player = new Player();
         this.hud = hud;
@@ -155,18 +156,7 @@ public class Mapa extends JPanel implements ActionListener {
         timer = new Timer(12, this);
         timer.start();
 
-        try {
-            fontePixel = Font.createFont(
-                    Font.TRUETYPE_FONT,
-                    getClass().getResourceAsStream("/res/Press_Start_2P/PressStart2P-Regular.ttf")
-            ).deriveFont(18f);
-
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(fontePixel);  // opcional
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fontePixel = new Font("Arial", Font.PLAIN, 18); // fallback
-        }
+        fontePixel = Recursos.fonte(18f);
     }
 
     @Override
@@ -474,14 +464,13 @@ public class Mapa extends JPanel implements ActionListener {
             g2.drawString(texto4, x + 10, y + 145);
             g2.drawString(texto5, x + 100, y + 204);
         }
-        g.dispose();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         int oldX = player.getX();
         int oldY = player.getY();
-        player.Update();]
+        player.Update();
 
         Rectangle jogador = player.getBounds();
         for (Rectangle obstaculo : colisoes) {
@@ -583,7 +572,4 @@ public class Mapa extends JPanel implements ActionListener {
         }
     }
 
-    public void mousePressed(MouseEvent e) {
-        statsMenuController.clicar(e.getX(), e.getY());
-    }
 }

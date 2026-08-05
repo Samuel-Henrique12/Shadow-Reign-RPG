@@ -1,5 +1,7 @@
 package telaMenu;
 
+
+import tela.Recursos;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -24,25 +26,13 @@ public class CriacaoNome extends JPanel implements KeyListener, MouseListener {
         addKeyListener(this);
         addMouseListener(this);
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/res/criacaoNome.jpg"));
-        imagemCriacaoNome = icon.getImage();
+        imagemCriacaoNome = Recursos.imagem("criacaoNome.jpg");
 
         carregarFonte();
     }
 
     private void carregarFonte() {
-        try {
-            fontePixel = Font.createFont(
-                    Font.TRUETYPE_FONT,
-                    getClass().getResourceAsStream("/res/Press_Start_2P/PressStart2P-Regular.ttf")
-            ).deriveFont(18f);
-
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(fontePixel);  // opcional
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fontePixel = new Font("Arial", Font.PLAIN, 18);
-        }
+        fontePixel = Recursos.fonte(18f);
     }
 
     @Override

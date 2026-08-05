@@ -13,7 +13,7 @@ public class Hud {
     private final int statsIconHeight = 160;
 
     public Hud() {
-        statsIcon = new ImageIcon(getClass().getResource("/res/statsIcon.png")).getImage();
+        statsIcon = Recursos.imagem("statsIcon.png");
     }
 
     public void render(Graphics g) {

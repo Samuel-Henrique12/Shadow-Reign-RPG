@@ -1,5 +1,7 @@
 package fundo;
 
+
+import tela.Recursos;
 import javax.swing.Timer;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -55,13 +57,13 @@ public class MapaInimigoMago extends JPanel implements ActionListener {
 
         vidaAnimadaPlayer = player.getVida();
 
-        fundoBatalhaImg = new ImageIcon("res/Batalha.png").getImage();
+        fundoBatalhaImg = Recursos.imagem("Batalha.png");
 
-        playerBatalhaImg1 = new ImageIcon("res/PlayerBatalha1.png").getImage();
-        playerBatalhaImg2 = new ImageIcon("res/PlayerBatalha2.png").getImage();
+        playerBatalhaImg1 = Recursos.imagem("PlayerBatalha1.png");
+        playerBatalhaImg2 = Recursos.imagem("PlayerBatalha2.png");
 
-        inimigoMagoImg1 = new ImageIcon("res/Oni1.png").getImage();
-        inimigoMagoImg2 = new ImageIcon("res/Oni2.png").getImage();
+        inimigoMagoImg1 = Recursos.imagem("Oni1.png");
+        inimigoMagoImg2 = Recursos.imagem("Oni2.png");
 
         setFocusable(true);
         setDoubleBuffered(true);
@@ -69,18 +71,7 @@ public class MapaInimigoMago extends JPanel implements ActionListener {
         timer = new Timer(17, this);
         timer.start();
 
-        try {
-            fontePixel = Font.createFont(
-                    Font.TRUETYPE_FONT,
-                    getClass().getResourceAsStream("/res/Press_Start_2P/PressStart2P-Regular.ttf")
-            ).deriveFont(18f);
-
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(fontePixel);  // opcional
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fontePixel = new Font("Arial", Font.PLAIN, 18);
-        }
+        fontePixel = Recursos.fonte(18f);
 
         mostrarMensagensIniciais();
 

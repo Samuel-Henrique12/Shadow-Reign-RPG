@@ -1,5 +1,7 @@
 package fundo;
 
+
+import tela.Recursos;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -61,10 +63,9 @@ public class Dojo extends JPanel implements ActionListener {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        ImageIcon ref = new ImageIcon("res\\dojo.png");
-        imagemDojo = ref.getImage();
+        imagemDojo = Recursos.imagem("dojo.png");
 
-        Mago = new ImageIcon(getClass().getResource("/res/Mago.png")).getImage();
+        Mago = Recursos.imagem("Mago.png");
 
         player = new Player();
         player.setColisoesCasa(colisoesDojo);
@@ -83,18 +84,7 @@ public class Dojo extends JPanel implements ActionListener {
         timer.start();
 
 
-        try {
-            fontePixel = Font.createFont(
-                    Font.TRUETYPE_FONT,
-                    getClass().getResourceAsStream("/res/Press_Start_2P/PressStart2P-Regular.ttf")
-            ).deriveFont(18f);
-
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(fontePixel);  // opcional
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fontePixel = new Font("Arial", Font.PLAIN, 18);
-        }
+        fontePixel = Recursos.fonte(18f);
     }
 
     public Player getPlayer() {
@@ -285,7 +275,6 @@ public class Dojo extends JPanel implements ActionListener {
             String texto = "APERTE ENTER PARA ENFRENTAR O ONI!";
             g2.drawString(texto, x + 50, y + 125);
         }
-        g.dispose();
     }
 
     @Override

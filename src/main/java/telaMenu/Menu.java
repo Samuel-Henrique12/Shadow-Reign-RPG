@@ -1,5 +1,7 @@
 package telaMenu;
 
+
+import tela.Recursos;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -20,8 +22,7 @@ public class Menu extends JPanel implements KeyListener, MouseListener {
         addMouseListener(this);
         addKeyListener(this);
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/res/menu.jpeg"));
-        imagemMenu = icon.getImage();
+        imagemMenu = Recursos.imagem("menu.jpeg");
     }
 
     @Override

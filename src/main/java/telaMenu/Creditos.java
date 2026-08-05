@@ -1,5 +1,7 @@
 package telaMenu;
 
+
+import tela.Recursos;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -22,8 +24,8 @@ public class Creditos extends JPanel {
         setFocusable(true);
         setBackground(Color.BLACK);
 
-        creditos1 = new ImageIcon(getClass().getResource("/res/creditos1.png")).getImage();
-        creditos2 = new ImageIcon(getClass().getResource("/res/creditos2.jpeg")).getImage();
+        creditos1 = Recursos.imagem("creditos1.png");
+        creditos2 = Recursos.imagem("creditos2.jpeg");
 
         addMouseListener(new MouseAdapter() {
             @Override

@@ -1,5 +1,7 @@
 package fundo;
 
+
+import tela.Recursos;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -36,7 +38,7 @@ public class Escola extends JPanel implements ActionListener, KeyListener {
         setDoubleBuffered(true);
         requestFocusInWindow();
 
-        imagemFundo = new ImageIcon(getClass().getResource("/res/sala.png")).getImage();
+        imagemFundo = Recursos.imagem("sala.png");
 
         dialogos.add("PRESTA ATENÇÃO AQUI NO CABEÇUDINHO");
         dialogos.add("Ah, só tem você aí");
@@ -46,18 +48,7 @@ public class Escola extends JPanel implements ActionListener, KeyListener {
         timer = new Timer(16, this);
         timer.start();
 
-        try {
-            fontePixel = Font.createFont(
-                    Font.TRUETYPE_FONT,
-                    getClass().getResourceAsStream("/res/Press_Start_2P/PressStart2P-Regular.ttf")
-            ).deriveFont(18f);
-
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(fontePixel);  // opcional
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fontePixel = new Font("Arial", Font.PLAIN, 18); // fallback
-        }
+        fontePixel = Recursos.fonte(18f);
 
         addKeyListener(new KeyAdapter() {
             @Override
