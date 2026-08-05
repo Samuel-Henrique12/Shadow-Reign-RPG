@@ -224,7 +224,7 @@ public class MapaInimigoMago extends JPanel implements ActionListener {
                 JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
                 Dojo dojo = new Dojo(hud, statsMenuController);
                 dojo.getPlayer().setX(750);
-                dojo.getPlayer().setY(470);
+                dojo.getPlayer().setY(55);
                 janela.remove(this);
                 janela.add(dojo);
                 janela.revalidate();

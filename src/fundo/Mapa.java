@@ -481,7 +481,7 @@ public class Mapa extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         int oldX = player.getX();
         int oldY = player.getY();
-        player.Update();
+        player.Update();]
 
         Rectangle jogador = player.getBounds();
         for (Rectangle obstaculo : colisoes) {
