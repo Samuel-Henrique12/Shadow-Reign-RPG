@@ -22,8 +22,16 @@ public abstract class PainelEscalavel extends JPanel {
     // OBSERVAÇÃO: O Relogio do Windows Tem Granularidade de 15,625ms
     public static final int INTERVALO_MS = 14;
 
+    // Passo Fixo da Logica: o Movimento Nao Depende da Taxa Real do Timer
+    public static final int PASSO_LOGICO_MS = 16;
+
+    // Teto de Compensacao: Evita Salto Enorme Depois de Uma Travada Longa
+    private static final int MAXIMO_PASSOS = 5;
+
     private final int larguraBase;
     private final int alturaBase;
+
+    private long marcoLogica = 0;
 
     private double fator = 1.0;
     private int deslocX = 0;
@@ -92,6 +100,26 @@ public abstract class PainelEscalavel extends JPanel {
 
     // Corpo do Antigo paintComponent de Cada Tela
     protected abstract void desenhar(Graphics2D g);
+
+    // Quantos Passos de Logica Cabem no Tempo Decorrido Desde o Ultimo Quadro
+    protected final int passosDeLogica() {
+        long agora = System.currentTimeMillis();
+
+        if (marcoLogica == 0) {
+            marcoLogica = agora;
+            return 1;
+        }
+
+        int passos = (int) ((agora - marcoLogica) / PASSO_LOGICO_MS);
+
+        if (passos > MAXIMO_PASSOS) {
+            marcoLogica = agora;
+            return MAXIMO_PASSOS;
+        }
+
+        marcoLogica += (long) passos * PASSO_LOGICO_MS;
+        return passos;
+    }
 
     // Chamado Pelo Container Antes de Mostrar a Tela
     public void aoEntrar() {

@@ -437,18 +437,11 @@ public class Mapa extends PainelEscalavel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int oldX = player.getX();
-        int oldY = player.getY();
-        player.Update();
+        for (int passo = passosDeLogica(); passo > 0; passo--) {
+            moverJogador();
+        }
 
         Rectangle jogador = player.getBounds();
-        for (Rectangle obstaculo : colisoes) {
-            if (jogador.intersects(obstaculo)) {
-                player.setX(oldX);
-                player.setY(oldY);
-                break;
-            }
-        }
         if (areaParaCasa.intersects(jogador)) {
             mostrarMensagemCasa = true;
         } else {
@@ -506,6 +499,22 @@ public class Mapa extends PainelEscalavel implements ActionListener {
 
         atualizarCamera();
         repaint();
+    }
+
+    // Um Passo de Movimento: Anda e Desfaz se Bateu em Obstaculo
+    private void moverJogador() {
+        int oldX = player.getX();
+        int oldY = player.getY();
+        player.Update();
+
+        Rectangle jogador = player.getBounds();
+        for (Rectangle obstaculo : colisoes) {
+            if (jogador.intersects(obstaculo)) {
+                player.setX(oldX);
+                player.setY(oldY);
+                break;
+            }
+        }
     }
 
     // Precisa Rodar Antes do Primeiro Frame, Senao a Cena Salta ao Entrar

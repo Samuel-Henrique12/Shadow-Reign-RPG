@@ -71,6 +71,14 @@ public class Dojo extends PainelEscalavel implements ActionListener {
 
         addKeyListener(new TecladoAdapter());
 
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                java.awt.Point p = paraLogico(e.getX(), e.getY());
+                statsMenuController.clicar(p.x, p.y);
+            }
+        });
+
         requestFocusInWindow();
 
         timer = new Timer(PainelEscalavel.INTERVALO_MS, this);
@@ -270,8 +278,11 @@ public class Dojo extends PainelEscalavel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        for (int passo = passosDeLogica(); passo > 0; passo--) {
+            player.Update();
+        }
+
         atualizarCamera();
-        player.Update();
 
         Rectangle jogador = new Rectangle(player.getX(), player.getY(), 83, 83);
         if (areaParaMapa.intersects(jogador)) {

@@ -297,11 +297,10 @@ public class Casa extends PainelEscalavel implements ActionListener, KeyListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        player.Update();
-
-        if (colisoesCasa.temColisao(player.getBounds())) {
-            player.cancelarMovimento();
+        for (int passo = passosDeLogica(); passo > 0; passo--) {
+            moverJogador();
         }
+
         if (areaDaPorta.intersects(player.getBounds())) {
             trocarParaMapa();
         }
@@ -322,6 +321,15 @@ public class Casa extends PainelEscalavel implements ActionListener, KeyListener
             dialogoMae = false;
         }
         repaint();
+    }
+
+    // Um Passo de Movimento: Para o Jogador se Encostou em Colisao
+    private void moverJogador() {
+        player.Update();
+
+        if (colisoesCasa.temColisao(player.getBounds())) {
+            player.cancelarMovimento();
+        }
     }
 
     @Override
