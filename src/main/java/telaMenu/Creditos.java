@@ -1,7 +1,5 @@
 package telaMenu;
 
-
-
 import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.JPanel;
@@ -27,7 +25,7 @@ public class Creditos extends PainelEscalavel {
         setFocusable(true);
         setBackground(Color.BLACK);
 
-        creditos1 = Recursos.imagem("creditos1.png");
+        creditos1 = Recursos.imagem("creditos1.jpg");
         creditos2 = Recursos.imagem("creditos2.jpeg");
 
         addMouseListener(new MouseAdapter() {

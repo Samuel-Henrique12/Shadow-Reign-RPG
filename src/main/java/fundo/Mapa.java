@@ -111,7 +111,7 @@ public class Mapa extends PainelEscalavel implements ActionListener {
         });
 
 
-        mapaPrincipal = Recursos.imagem("mapa2.png");
+        mapaPrincipal = Recursos.imagem("mapa2.jpg");
 
         Arqueiro = Recursos.imagem("Arqueiro.png");
         Barbaro = Recursos.imagem("Barbaro.png");

@@ -17,6 +17,10 @@ import tela.StatsMenu;
 
 public class MapaInimigoArqueiro extends PainelEscalavel implements ActionListener {
 
+    // Dimensões da Tela de Batalha
+    private static final int LARGURA_BATALHA = 1560;
+    private static final int ALTURA_BATALHA = 800;
+
     private Timer timer;
     private Player player;
     private Hud hud;
@@ -56,7 +60,7 @@ public class MapaInimigoArqueiro extends PainelEscalavel implements ActionListen
 
         vidaAnimadaPlayer = player.getVida();
 
-        fundoBatalhaImg = Recursos.imagem("Batalha.png");
+        fundoBatalhaImg = Recursos.imagem("Batalha.jpg");
 
         playerBatalhaImg1 = Recursos.imagem("PlayerBatalha1.png");
         playerBatalhaImg2 = Recursos.imagem("PlayerBatalha2.png");
@@ -129,7 +133,7 @@ public class MapaInimigoArqueiro extends PainelEscalavel implements ActionListen
     protected void desenhar(Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g;
 
-        g.drawImage(fundoBatalhaImg, 0, 0, null);
+        g.drawImage(fundoBatalhaImg, 0, 0, LARGURA_BATALHA, ALTURA_BATALHA, null);
 
         Image inimigoAtual = alternarSprite ? inimigoArqueiroImg1 : inimigoArqueiroImg2;
         g.drawImage(inimigoAtual, 1080, 180, 210, 210, null);

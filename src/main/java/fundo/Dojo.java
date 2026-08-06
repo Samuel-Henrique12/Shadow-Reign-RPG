@@ -12,6 +12,10 @@ import tela.StatsMenu;
 
 public class Dojo extends PainelEscalavel implements ActionListener {
 
+    // Dimensões do Dojo
+    private static final int LARGURA_DOJO = 1600;
+    private static final int ALTURA_DOJO = 1350;
+
     private Image imagemDojo;
     private int cameraX = 0;
     private int cameraY = 0;
@@ -52,7 +56,7 @@ public class Dojo extends PainelEscalavel implements ActionListener {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        imagemDojo = Recursos.imagem("dojo.png");
+        imagemDojo = Recursos.imagem("dojo.jpg");
 
         Mago = Recursos.imagem("Mago.png");
 
@@ -83,7 +87,7 @@ public class Dojo extends PainelEscalavel implements ActionListener {
     protected void desenhar(Graphics2D g) {
         Graphics2D g2 = (Graphics2D) g;
         Graphics2D graficos = (Graphics2D) g;
-        g.drawImage(imagemDojo, -cameraX, -cameraY, this);
+        g.drawImage(imagemDojo, -cameraX, -cameraY, LARGURA_DOJO, ALTURA_DOJO, this);
         g.drawImage(player.getImagem(), player.getX(), player.getY(), 83, 83, this);
 
         int larguraMago = 100;

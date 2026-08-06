@@ -1,10 +1,10 @@
 package tela;
+
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import java.awt.Rectangle;
 import fundo.ColisoesCasa;
-
 
 public class Player {
 
@@ -19,7 +19,6 @@ public class Player {
     private int x,y;
     private int dx, dy;
     private Image imagem;
-    int altura,largura;
     private String direcao = "Baixo";
     private String direcaoSimples = "Baixo";
     private String direcaoComposta = "BaixoDireita";
@@ -151,8 +150,6 @@ public class Player {
     public void Load() {
         Recursos.preCarregarPlayer();
         imagem = Recursos.imagem("PlayerParadoBaixo.png");
-        altura = imagem.getHeight(null);
-        largura = imagem.getWidth(null);
     }
 
     private ColisoesCasa colisoesCasa;

@@ -1,7 +1,5 @@
 package telaMenu;
 
-
-
 import tela.PainelEscalavel;
 import tela.Recursos;
 import javax.swing.*;
@@ -10,6 +8,11 @@ import java.awt.event.*;
 import tela.Container;
 
 public class Menu extends PainelEscalavel implements KeyListener, MouseListener {
+
+    // Dimensões da Arte do Menu
+    private static final int LARGURA_ARTE = 1599;
+    private static final int ALTURA_ARTE = 899;
+
     private Image imagemMenu;
     private int opcaoSelecionada = 0;
     private Container container;
@@ -29,7 +32,7 @@ public class Menu extends PainelEscalavel implements KeyListener, MouseListener 
     }
     @Override
     protected void desenhar(Graphics2D g) {
-        g.drawImage(imagemMenu, 0, 0, this);
+        g.drawImage(imagemMenu, 0, 0, LARGURA_ARTE, ALTURA_ARTE, this);
     }
 @Override
 public void keyPressed(KeyEvent e) {

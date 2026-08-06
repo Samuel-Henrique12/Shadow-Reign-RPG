@@ -12,6 +12,11 @@ import tela.*;
 import tela.StatsMenu;
 
 public class Casa extends PainelEscalavel implements ActionListener, KeyListener {
+
+    // Dimensões da Casa
+    private static final int LARGURA_CASA = 1600;
+    private static final int ALTURA_CASA = 1536;
+
     private Image imagemCasa;
     private final Player player;
     private final Timer timer;
@@ -69,7 +74,7 @@ public class Casa extends PainelEscalavel implements ActionListener, KeyListener
             }
         });
 
-        imagemCasa = Recursos.imagem("casa2.png");
+        imagemCasa = Recursos.imagem("casa2.jpg");
 
         playerPai = Recursos.imagem("PlayerPai.png");
         playerMae = Recursos.imagem("PlayerMae.png");
@@ -93,11 +98,11 @@ public class Casa extends PainelEscalavel implements ActionListener, KeyListener
         int cameraX = player.getX() - larguraLogica() / 2 + 32 / 2;
         int cameraY = player.getY() - alturaLogica() / 2 + 1050 / 2;
 
-        cameraX = Math.max(0, Math.min(cameraX, imagemCasa.getWidth(this) - larguraLogica()));
-        cameraY = Math.max(0, Math.min(cameraY, imagemCasa.getHeight(this) - alturaLogica()));
+        cameraX = Math.max(0, Math.min(cameraX, LARGURA_CASA - larguraLogica()));
+        cameraY = Math.max(0, Math.min(cameraY, ALTURA_CASA - alturaLogica()));
         Graphics2D g2 = (Graphics2D) g;
 
-        g.drawImage(imagemCasa, -cameraX, -cameraY, this);
+        g.drawImage(imagemCasa, -cameraX, -cameraY, LARGURA_CASA, ALTURA_CASA, this);
         int larguraCasaPlayer = 107;
         int alturaCasaPlayer = 107;
 
