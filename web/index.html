@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shadow Reign RPG — Jogue no Navegador</title>
+    <meta name="description" content="RPG de turno em Java Swing, jogável direto no navegador via CheerpJ. Projeto de Samuel Henrique.">
+    <meta name="theme-color" content="#151515">
+
+    <style>
+        :root {
+            --fundo: #151515;
+            --superficie: #1e1e1e;
+            --borda: #2e2e2e;
+            --texto: #e8e8e8;
+            --texto-fraco: #9a9a9a;
+            --acento: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem 1rem 2rem;
+            background: var(--fundo);
+            color: var(--texto);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.55;
+        }
+
+        /* Cabecalho */
+
+        header {
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            letter-spacing: 0.02em;
+        }
+
+        header h1 span {
+            color: var(--acento);
+        }
+
+        header p {
+            margin-top: 0.35rem;
+            color: var(--texto-fraco);
+            font-size: 0.9rem;
+        }
+
+        /* Moldura do Jogo: Trava a Proporcao 1540x845 da Base Logica */
+
+        .moldura {
+            position: relative;
+            width: 100%;
+            max-width: min(1540px, calc(68vh * 1540 / 845));
+            aspect-ratio: 1540 / 845;
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #palco {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Capa Sobreposta ao Palco: Some Quando o Jogo Sobe */
+
+        #capa {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+            padding: 1.5rem;
+            text-align: center;
+            background: radial-gradient(circle at 50% 40%, #262626 0%, #0d0d0d 75%);
+            transition: opacity 0.4s ease;
+        }
+
+        #capa.oculto {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #capa p {
+            max-width: 46ch;
+            color: var(--texto-fraco);
+            font-size: 0.9rem;
+        }
+
+        #jogar {
+            padding: 0.85rem 2.5rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--acento);
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        #jogar:hover:not(:disabled) {
+            background: #ef4444;
+            transform: translateY(-2px);
+        }
+
+        #jogar:disabled {
+            background: #4a4a4a;
+            cursor: default;
+            transform: none;
+        }
+
+        /* Progresso do Download do Runtime */
+
+        #progresso {
+            display: none;
+            width: min(340px, 80%);
+        }
+
+        #progresso.visivel {
+            display: block;
+        }
+
+        #trilho {
+            height: 6px;
+            border-radius: 3px;
+            background: #333;
+            overflow: hidden;
+        }
+
+        #barra {
+            height: 100%;
+            width: 0;
+            background: var(--acento);
+            transition: width 0.2s ease;
+        }
+
+        #rotulo {
+            margin-top: 0.6rem;
+            color: var(--texto-fraco);
+            font-size: 0.82rem;
+        }
+
+        #erro {
+            display: none;
+            max-width: 46ch;
+            color: #fca5a5;
+            font-size: 0.88rem;
+        }
+
+        #erro.visivel {
+            display: block;
+        }
+
+        /* Legenda de Controles */
+
+        .controles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 1.75rem;
+            max-width: 1540px;
+            padding: 0.9rem 1.25rem;
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+            background: var(--superficie);
+            color: var(--texto-fraco);
+            font-size: 0.85rem;
+        }
+
+        .controles div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        kbd {
+            padding: 0.15rem 0.45rem;
+            border: 1px solid #444;
+            border-bottom-width: 2px;
+            border-radius: 4px;
+            background: #262626;
+            color: var(--texto);
+            font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+            font-size: 0.76rem;
+            white-space: nowrap;
+        }
+
+        /* Rodape */
+
+        footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.4rem 1.25rem;
+            color: #6f6f6f;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        a {
+            color: var(--texto-fraco);
+            text-decoration: none;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        a:hover {
+            color: var(--acento);
+            border-bottom-color: var(--acento);
+        }
+
+        /* Telas Sem Teclado Fisico: o Jogo e 100% Teclado */
+
+        @media (any-hover: none) and (pointer: coarse) {
+            .moldura,
+            .controles {
+                display: none;
+            }
+        }
+
+        #semTeclado {
+            display: none;
+            max-width: 46ch;
+            padding: 1.5rem;
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+            background: var(--superficie);
+            color: var(--texto-fraco);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        @media (any-hover: none) and (pointer: coarse) {
+            #semTeclado {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Shadow <span>Reign</span> RPG</h1>
+    <p>RPG de turno em Java Swing, rodando direto no navegador</p>
+</header>
+
+<div class="moldura">
+    <div id="palco"></div>
+
+    <div id="capa">
+        <p>
+            O jogo roda como uma aplicação Java real dentro do navegador. O primeiro carregamento
+            baixa cerca de 20&nbsp;MB de runtime e leva alguns segundos — depois disso fica em cache.
+        </p>
+
+        <button id="jogar" type="button">Jogar</button>
+
+        <div id="progresso">
+            <div id="trilho"><div id="barra"></div></div>
+            <p id="rotulo">Preparando…</p>
+        </div>
+
+        <p id="erro"></p>
+    </div>
+</div>
+
+<div class="controles">
+    <div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> ou <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> mover</div>
+    <div><kbd>Enter</kbd> confirmar / interagir</div>
+    <div><kbd>Esc</kbd> voltar / fugir da batalha</div>
+    <div><kbd>1</kbd> – <kbd>4</kbd> ações de combate e melhorias</div>
+    <div><kbd>Backspace</kbd> apagar no nome</div>
+    <div><kbd>F3</kbd> ver hitboxes</div>
+</div>
+
+<div id="semTeclado">
+    <p>
+        Este jogo é controlado 100% por teclado, então não dá para jogar por toque.
+        Abra esta página num computador — ou baixe o
+        <a href="jogo.jar" download>jogo.jar</a> e rode com <code>java -jar jogo.jar</code>.
+    </p>
+</div>
+
+<footer>
+    <span>Feito por <a href="https://samuelhenrique.dev/">Samuel Henrique</a></span>
+    <span><a href="https://github.com/Samuel-Henrique12/Shadow-Reign-RPG">Código no GitHub</a></span>
+    <span>Java no navegador por <a href="https://cheerpj.com/">CheerpJ</a>, da Leaning Technologies</span>
+</footer>
+
+<script>
+    const capa = document.getElementById("capa");
+    const botaoJogar = document.getElementById("jogar");
+    const progresso = document.getElementById("progresso");
+    const barra = document.getElementById("barra");
+    const rotulo = document.getElementById("rotulo");
+    const erro = document.getElementById("erro");
+    const palco = document.getElementById("palco");
+
+    // Carrega o Runtime So no Clique: Senao Todo Visitante Baixa 20 MB a Toa
+    function carregarLoader() {
+        return new Promise((resolver, rejeitar) => {
+            const script = document.createElement("script");
+            script.src = "https://cjrtnc.leaningtech.com/4.3/loader.js";
+            script.onload = resolver;
+            script.onerror = () => rejeitar(new Error("runtime indisponivel"));
+            document.head.appendChild(script);
+        });
+    }
+
+    // Impede o Navegador de Rolar a Pagina, Voltar ou Abrir a Busca
+    function bloquearTeclasDoNavegador(evento) {
+        const reservadas = [
+            "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
+            "Backspace", "F3"
+        ];
+
+        return reservadas.includes(evento.code) || reservadas.includes(evento.key);
+    }
+
+    function atualizarProgresso(feito, total) {
+        const porcento = total > 0 ? Math.round((feito / total) * 100) : 0;
+        barra.style.width = porcento + "%";
+        rotulo.textContent = "Carregando o runtime Java… " + porcento + "%";
+    }
+
+    function mostrarFalha(mensagem) {
+        erro.innerHTML = mensagem
+            + ' Você ainda pode baixar o <a href="jogo.jar" download>jogo.jar</a>'
+            + " e rodar com <code>java -jar jogo.jar</code>.";
+        erro.classList.add("visivel");
+        progresso.classList.remove("visivel");
+        botaoJogar.disabled = false;
+        botaoJogar.textContent = "Tentar de novo";
+    }
+
+    async function iniciar() {
+        botaoJogar.disabled = true;
+        botaoJogar.textContent = "Carregando…";
+        erro.classList.remove("visivel");
+        progresso.classList.add("visivel");
+        rotulo.textContent = "Baixando o runtime…";
+
+        try {
+            await carregarLoader();
+
+            await cheerpjInit({
+                // Padrao do CheerpJ e Java 8; o Jar e Compilado com release=11
+                version: 11,
+                javaProperties: ["shadowreign.web=true"],
+                status: "splash",
+                preloadProgress: atualizarProgresso,
+                overrideShortcuts: bloquearTeclasDoNavegador
+            });
+
+            cheerpjCreateDisplay(-1, -1, palco);
+
+            capa.classList.add("oculto");
+
+            // /app/ Aponta pra Raiz do Servidor Que Serviu Esta Pagina
+            await cheerpjRunJar("/app/jogo.jar");
+
+        } catch (falha) {
+            console.error(falha);
+            capa.classList.remove("oculto");
+            mostrarFalha("Não foi possível carregar o jogo no navegador.");
+        }
+    }
+
+    botaoJogar.addEventListener("click", iniciar);
+</script>
+
+</body>
+</html>
