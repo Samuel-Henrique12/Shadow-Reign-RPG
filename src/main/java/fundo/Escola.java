@@ -168,8 +168,8 @@ public class Escola extends PainelEscalavel implements ActionListener, KeyListen
 
     private void trocarParaMapa() {
         Mapa novoMapa = new Mapa(hud, statsMenuController);
-        novoMapa.getPlayer().setX(190);
-        novoMapa.getPlayer().setY(260);
+        novoMapa.getPlayer().setX(900);
+        novoMapa.getPlayer().setY(890);
         Navegacao.trocarTela(this, novoMapa);
     }
     @Override

@@ -89,14 +89,24 @@ public class Container extends JFrame {
 
     // Troca a Tela de Gameplay Ativa
     public void trocarTela(PainelEscalavel nova) {
-        if (telaDinamica != null) {
-            telaDinamica.aoSair();
-            painelPrincipal.remove(telaDinamica);
+        PainelEscalavel anterior = telaDinamica;
+
+        if (anterior != null) {
+            anterior.aoSair();
         }
+
+        // Prepara o Primeiro Frame Antes de Aparecer, Senao a Tela Salta
+        nova.setSize(painelPrincipal.getSize());
+        nova.aoEntrar();
 
         telaDinamica = nova;
         painelPrincipal.add(nova, DINAMICA);
         cardLayout.show(painelPrincipal, DINAMICA);
+
+        // Remove a Antiga So Depois: Evita um Quadro Sem Nenhuma Tela Visivel
+        if (anterior != null) {
+            painelPrincipal.remove(anterior);
+        }
 
         painelPrincipal.revalidate();
         painelPrincipal.repaint();

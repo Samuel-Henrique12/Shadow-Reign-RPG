@@ -270,8 +270,7 @@ public class Dojo extends PainelEscalavel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        cameraX = player.getX() - larguraLogica() / 2 + 40 / 2;
-        cameraY = player.getY() - alturaLogica() / 2 + 500;
+        atualizarCamera();
         player.Update();
 
         Rectangle jogador = new Rectangle(player.getX(), player.getY(), 83, 83);
@@ -301,12 +300,23 @@ public class Dojo extends PainelEscalavel implements ActionListener {
             trocarParaInimigoOni();
         }
 
+        repaint();
+    }
+
+    // Precisa Rodar Antes do Primeiro Frame, Senao a Cena Salta ao Entrar
+    private void atualizarCamera() {
+        cameraX = player.getX() - larguraLogica() / 2 + 40 / 2;
+        cameraY = player.getY() - alturaLogica() / 2 + 500;
+
         if (cameraX > 0) cameraX = 0;
         if (cameraY > 555) cameraY = 555;
         if (cameraX < 0) cameraX = 0;
         if (cameraY < 0) cameraY = 0;
+    }
 
-        repaint();
+    @Override
+    public void aoEntrar() {
+        atualizarCamera();
     }
 
     private class TecladoAdapter extends KeyAdapter {

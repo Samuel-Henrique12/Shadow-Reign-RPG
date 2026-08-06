@@ -504,6 +504,12 @@ public class Mapa extends PainelEscalavel implements ActionListener {
             trocarParaInimigoBarbaro();
         }
 
+        atualizarCamera();
+        repaint();
+    }
+
+    // Precisa Rodar Antes do Primeiro Frame, Senao a Cena Salta ao Entrar
+    private void atualizarCamera() {
         cameraX = player.getX() - telaLargura / 2;
         cameraY = player.getY() - telaAltura / 2;
 
@@ -511,7 +517,11 @@ public class Mapa extends PainelEscalavel implements ActionListener {
         if (cameraY < 0) cameraY = 0;
         if (cameraX > 0) cameraX = 0;
         if (cameraY > 230) cameraY = 230;
-        repaint();
+    }
+
+    @Override
+    public void aoEntrar() {
+        atualizarCamera();
     }
 
     private class TecladoAdapter extends KeyAdapter {

@@ -19,7 +19,8 @@ public abstract class PainelEscalavel extends JPanel {
     public static final int ALTURA_PADRAO = 845;
 
     // Intervalo do Loop de Render, Unico para Todas as Telas
-    public static final int INTERVALO_MS = 16;
+    // OBSERVAÇÃO: O Relogio do Windows Tem Granularidade de 15,625ms
+    public static final int INTERVALO_MS = 14;
 
     private final int larguraBase;
     private final int alturaBase;
@@ -91,6 +92,10 @@ public abstract class PainelEscalavel extends JPanel {
 
     // Corpo do Antigo paintComponent de Cada Tela
     protected abstract void desenhar(Graphics2D g);
+
+    // Chamado Pelo Container Antes de Mostrar a Tela
+    public void aoEntrar() {
+    }
 
     // Chamado Pelo Container Antes de Descartar a Tela
     public void aoSair() {
