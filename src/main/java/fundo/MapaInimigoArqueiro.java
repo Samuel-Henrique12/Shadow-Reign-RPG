@@ -71,7 +71,7 @@ public class MapaInimigoArqueiro extends PainelEscalavel implements ActionListen
         setFocusable(true);
         setDoubleBuffered(true);
 
-        timer = new Timer(17, this);
+        timer = new Timer(PainelEscalavel.INTERVALO_MS, this);
         timer.start();
 
         fontePixel = Recursos.fonte(18f);

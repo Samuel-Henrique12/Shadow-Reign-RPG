@@ -87,8 +87,7 @@ public class Casa extends PainelEscalavel implements ActionListener, KeyListener
         this.hud = hud;
         this.statsMenuController = statsMenu;
 
-
-        timer = new Timer (15,this);
+        timer = new Timer(PainelEscalavel.INTERVALO_MS, this);
         timer.start();
 
         fontePixel = Recursos.fonte(18f);

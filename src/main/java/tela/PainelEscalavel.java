@@ -18,6 +18,9 @@ public abstract class PainelEscalavel extends JPanel {
     public static final int LARGURA_PADRAO = 1540;
     public static final int ALTURA_PADRAO = 845;
 
+    // Intervalo do Loop de Render, Unico para Todas as Telas
+    public static final int INTERVALO_MS = 16;
+
     private final int larguraBase;
     private final int alturaBase;
 

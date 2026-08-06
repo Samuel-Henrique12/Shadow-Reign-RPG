@@ -47,7 +47,7 @@ public class Escola extends PainelEscalavel implements ActionListener, KeyListen
         dialogos.add("Você quer upar seus atributos?");
         dialogos.add("Quer saber?... F@#!$-se, eu não ligo");
 
-        timer = new Timer(16, this);
+        timer = new Timer(PainelEscalavel.INTERVALO_MS, this);
         timer.start();
 
         fontePixel = Recursos.fonte(18f);

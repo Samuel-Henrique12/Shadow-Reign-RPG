@@ -50,16 +50,26 @@ public class Container extends JFrame {
         painelPrincipal.add(new Creditos(this), CREDITOS);
 
 
-        // Configurações da janela
+        // Configuracoes da Janela
         add(painelPrincipal);
         setTitle("Shadow Reign RPG");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(true);
-        setMinimumSize(new Dimension(640, 360));
 
-        pack();
-        ajustarAoMonitor();
-        setLocationRelativeTo(null);
+        if (Ambiente.web()) {
+            // Sem Decoracao: a Janela Ocupa Todo o Canvas do CheerpJ
+            setUndecorated(true);
+            // DISPOSE: EXIT_ON_CLOSE Mataria a JVM da Aba
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setResizable(false);
+            pack();
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+        } else {
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setResizable(true);
+            setMinimumSize(new Dimension(640, 360));
+            pack();
+            ajustarAoMonitor();
+            setLocationRelativeTo(null);
+        }
 
         instalarAtalhoDepuracao();
 
@@ -116,7 +126,7 @@ public class Container extends JFrame {
         int conteudoDisponivelW = util.width - bordas.left - bordas.right;
         int conteudoDisponivelH = util.height - bordas.top - bordas.bottom;
 
-        // Escalar a Janela Inteira Distorceria, Entao dimensiona o CONTEUDO na proporcao da base e soma os insets
+        // Dimensiona o Conteudo na Proporcao da Base e Soma os Insets
         double escala = Math.min(1.0, Math.min(
                 conteudoDisponivelW / (double) PainelEscalavel.LARGURA_PADRAO,
                 conteudoDisponivelH / (double) PainelEscalavel.ALTURA_PADRAO));
@@ -142,6 +152,7 @@ public class Container extends JFrame {
     }
 
     public static void main(String[] args) {
+        Ambiente.configurar(args);
         SwingUtilities.invokeLater(Container::new);
     }
 }

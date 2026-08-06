@@ -34,7 +34,7 @@ public class OtimizarAssets {
         new Alvo("casa2.png",        "casa2.jpg",       1600, 1536, 0.85f),
         new Alvo("dojo.png",         "dojo.jpg",        1600, 1350, 0.85f),
         new Alvo("Batalha.png",      "Batalha.jpg",     1560,  800, 0.88f),
-        // mapa2 e 1024x1536 mas Desenhado 1536x1024: Reamostrar Remove uma Reescala por Frame
+        // mapa2: Reamostrar pro Tamanho de Desenho Remove uma Reescala por Frame
         new Alvo("mapa2.png",        "mapa2.jpg",       1536, 1024, 0.85f),
         // Telas Cheias, Desenhadas Escaladas pra Base 1540x845
         new Alvo("creditos1.png",    "creditos1.jpg",   1540,  845, 0.85f),

@@ -73,7 +73,7 @@ public class Dojo extends PainelEscalavel implements ActionListener {
 
         requestFocusInWindow();
 
-        timer = new Timer(15, this);
+        timer = new Timer(PainelEscalavel.INTERVALO_MS, this);
         timer.start();
 
 

@@ -124,7 +124,7 @@ public class Mapa extends PainelEscalavel implements ActionListener {
 
         addKeyListener(new TecladoAdapter());
 
-        timer = new Timer(12, this);
+        timer = new Timer(PainelEscalavel.INTERVALO_MS, this);
         timer.start();
 
         fontePixel = Recursos.fonte(18f);
