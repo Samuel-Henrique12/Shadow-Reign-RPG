@@ -15,6 +15,9 @@
             --texto: #e8e8e8;
             --texto-fraco: #9a9a9a;
             --acento: #dc2626;
+
+            /* Espaco Ocupado por Cabecalho, Controles e Rodape */
+            --cromo: 190px;
         }
 
         * {
@@ -28,12 +31,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
-            padding: 1.5rem 1rem 2rem;
+            gap: 0.9rem;
+            padding: 0.9rem 0.75rem 1rem;
             background: var(--fundo);
             color: var(--texto);
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.55;
+            line-height: 1.5;
         }
 
         /* Cabecalho */
@@ -43,7 +46,7 @@
         }
 
         header h1 {
-            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-size: clamp(1.15rem, 2.2vw, 1.5rem);
             letter-spacing: 0.02em;
         }
 
@@ -52,23 +55,24 @@
         }
 
         header p {
-            margin-top: 0.35rem;
+            margin-top: 0.1rem;
             color: var(--texto-fraco);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
-        /* Moldura do Jogo: Trava a Proporcao 1540x845 da Base Logica */
+        /* Moldura: Reserva o Espaco na Proporcao da Base e Cresce ate o Limite da Viewport */
 
         .moldura {
             position: relative;
-            width: 100%;
-            max-width: min(1540px, calc(68vh * 1540 / 845));
+            width: min(100%, calc((100vh - var(--cromo)) * 1540 / 845));
             aspect-ratio: 1540 / 845;
             border: 1px solid var(--borda);
             border-radius: 10px;
             overflow: hidden;
             background: #000;
         }
+
+        /* O Display do CheerpJ Acompanha o Palco: Nada de transform Aqui */
 
         #palco {
             width: 100%;
@@ -80,11 +84,12 @@
         #capa {
             position: absolute;
             inset: 0;
+            z-index: 2;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 1.25rem;
+            gap: 1.1rem;
             padding: 1.5rem;
             text-align: center;
             background: radial-gradient(circle at 50% 40%, #262626 0%, #0d0d0d 75%);
@@ -174,31 +179,31 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 0.5rem 1.75rem;
+            gap: 0.35rem 1.5rem;
             max-width: 1540px;
-            padding: 0.9rem 1.25rem;
+            padding: 0.5rem 1rem;
             border: 1px solid var(--borda);
-            border-radius: 10px;
+            border-radius: 8px;
             background: var(--superficie);
             color: var(--texto-fraco);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .controles div {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         kbd {
-            padding: 0.15rem 0.45rem;
+            padding: 0.1rem 0.4rem;
             border: 1px solid #444;
             border-bottom-width: 2px;
             border-radius: 4px;
             background: #262626;
             color: var(--texto);
             font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-            font-size: 0.76rem;
+            font-size: 0.72rem;
             white-space: nowrap;
         }
 
@@ -208,9 +213,9 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 0.4rem 1.25rem;
+            gap: 0.25rem 1.25rem;
             color: #6f6f6f;
-            font-size: 0.8rem;
+            font-size: 0.76rem;
             text-align: center;
         }
 
@@ -225,15 +230,6 @@
             border-bottom-color: var(--acento);
         }
 
-        /* Telas Sem Teclado Fisico: o Jogo e 100% Teclado */
-
-        @media (any-hover: none) and (pointer: coarse) {
-            .moldura,
-            .controles {
-                display: none;
-            }
-        }
-
         #semTeclado {
             display: none;
             max-width: 46ch;
@@ -246,7 +242,14 @@
             text-align: center;
         }
 
+        /* Telas Sem Teclado Fisico */
+
         @media (any-hover: none) and (pointer: coarse) {
+            .moldura,
+            .controles {
+                display: none;
+            }
+
             #semTeclado {
                 display: block;
             }
@@ -286,7 +289,6 @@
     <div><kbd>Esc</kbd> voltar / fugir da batalha</div>
     <div><kbd>1</kbd> – <kbd>4</kbd> ações de combate e melhorias</div>
     <div><kbd>Backspace</kbd> apagar no nome</div>
-    <div><kbd>F3</kbd> ver hitboxes</div>
 </div>
 
 <div id="semTeclado">
@@ -304,13 +306,13 @@
 </footer>
 
 <script>
+    const palco = document.getElementById("palco");
     const capa = document.getElementById("capa");
     const botaoJogar = document.getElementById("jogar");
     const progresso = document.getElementById("progresso");
     const barra = document.getElementById("barra");
     const rotulo = document.getElementById("rotulo");
     const erro = document.getElementById("erro");
-    const palco = document.getElementById("palco");
 
     // Carrega o Runtime So no Clique: Senao Todo Visitante Baixa 20 MB a Toa
     function carregarLoader() {
@@ -323,11 +325,11 @@
         });
     }
 
-    // Impede o Navegador de Rolar a Pagina, Voltar ou Abrir a Busca
+    // Impede o Navegador de Rolar a Pagina ou Voltar de Historico
     function bloquearTeclasDoNavegador(evento) {
         const reservadas = [
             "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
-            "Backspace", "F3"
+            "Backspace"
         ];
 
         return reservadas.includes(evento.code) || reservadas.includes(evento.key);
@@ -368,6 +370,7 @@
                 overrideShortcuts: bloquearTeclasDoNavegador
             });
 
+            // -1 Faz o Display Acompanhar o Palco e Reagir a Redimensionamento
             cheerpjCreateDisplay(-1, -1, palco);
 
             capa.classList.add("oculto");
